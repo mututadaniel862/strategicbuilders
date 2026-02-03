@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  phone     String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Blog {
+  id            Int      @id @default(autoincrement())
+  title         String
+  slug          String   @unique
+  content       String
+  excerpt       String?
+  featuredImage String
+  author        String   @default("Admin")
+  isPublished   Boolean  @default(true)
+  category      String   @default("General")
+  views         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("blogs")
+}
+
+model Gallery {
+  id          Int      @id @default(autoincrement())
+  title       String
+  beforeImage String
+  afterImage  String
+  description String?
+  category    String   @default("other")
+  isFeatured  Boolean  @default(false)
+  adminPhone  String
+  adminEmail  String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("galleries")
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String?
+  rating     Int      @default(5)
+  comment    String
+  isApproved Boolean  @default(true)
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  phone      String?
+  subject    String?
+  message    String   @db.Text
+  ipAddress  String?
+  isRead     Boolean  @default(false)
+  isResolved Boolean  @default(false)
+  adminNotes String?  @db.Text
+  response   String?  @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("messages")
+}
+
+// model Message {
+//   id         Int      @id @default(autoincrement())
+//   name       String
+//   email      String
+//   phone      String?
+//   subject    String?
+//   message    String
+//   isRead     Boolean  @default(false)
+//   isResolved Boolean  @default(false)
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+
+//   @@map("messages")
+// }
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  action    String
+  details   Json     @default("{}")
+  userType  String   @default("public")
+  ipAddress String?
+  endpoint  String?
+  createdAt DateTime @default(now())
+
+  @@map("logs")
+}
