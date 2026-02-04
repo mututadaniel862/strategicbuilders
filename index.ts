@@ -22,17 +22,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware - CORS MUST come before routes!
+// Middleware - CORS MUST come FIRST before helmet!
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:3001', 
-    'https://yourdomain.com',
-    'https://strategicbuilderss.onrender.com'
-  ],
+  origin: '*', // Allow all origins for now
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(helmet());
 app.use(morgan('dev'));
