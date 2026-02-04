@@ -33,4 +33,3 @@ async function fixAdmin() {
     }
 }
 fixAdmin();
-//# sourceMappingURL=fix-admin.js.map

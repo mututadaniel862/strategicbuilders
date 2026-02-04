@@ -34,4 +34,3 @@ export const formatDate = (date) => {
         minute: '2-digit'
     });
 };
-//# sourceMappingURL=helpers.js.map

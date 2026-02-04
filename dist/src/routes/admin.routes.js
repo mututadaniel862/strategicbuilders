@@ -17,4 +17,3 @@ router.post('/create', adminAuth, AdminController.createAdmin);
 router.get('/all', adminAuth, AdminController.getAllAdmins);
 router.delete('/:id', adminAuth, AdminController.deleteAdmin);
 export default router;
-//# sourceMappingURL=admin.routes.js.map

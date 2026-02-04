@@ -13,4 +13,3 @@ router.get('/:id', adminAuth, ContactController.getMessage);
 router.put('/:id', adminAuth, ContactController.updateMessage);
 router.delete('/:id', adminAuth, ContactController.deleteMessage);
 export default router;
-//# sourceMappingURL=contact.routes.js.map

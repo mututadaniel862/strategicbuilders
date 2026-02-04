@@ -110,4 +110,3 @@ export const getTodayLogs = async () => {
         throw error;
     }
 };
-//# sourceMappingURL=logging.js.map

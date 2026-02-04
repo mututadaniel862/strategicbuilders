@@ -5,4 +5,3 @@ export const reviewSchema = z.object({
     rating: z.number().min(1).max(5).default(5),
     comment: z.string().min(10, 'Comment must be at least 10 characters').max(1000),
 });
-//# sourceMappingURL=review.schema.js.map

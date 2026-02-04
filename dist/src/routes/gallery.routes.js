@@ -60,4 +60,3 @@ export default router;
 // );
 // router.delete('/:id', adminAuth, GalleryController.deleteGalleryItem);
 // export default router;
-//# sourceMappingURL=gallery.routes.js.map

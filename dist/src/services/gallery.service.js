@@ -122,4 +122,3 @@ export class GalleryService {
         };
     }
 }
-//# sourceMappingURL=gallery.service.js.map

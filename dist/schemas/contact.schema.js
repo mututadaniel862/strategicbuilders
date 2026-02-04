@@ -6,4 +6,3 @@ export const contactSchema = z.object({
     subject: z.string().max(200).optional(),
     message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
 });
-//# sourceMappingURL=contact.schema.js.map

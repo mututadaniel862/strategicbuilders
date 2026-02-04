@@ -149,4 +149,3 @@ export default prisma;
 //   }
 // };
 // export default prisma;
-//# sourceMappingURL=database.js.map

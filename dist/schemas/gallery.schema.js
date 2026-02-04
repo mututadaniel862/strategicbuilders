@@ -23,4 +23,3 @@ export const galleryUpdateSchema = gallerySchema.partial();
 // export const galleryUpdateSchema = gallerySchema.partial();
 // export type GalleryData = z.infer<typeof gallerySchema>;
 // export type GalleryUpdateData = z.infer<typeof galleryUpdateSchema>;
-//# sourceMappingURL=gallery.schema.js.map

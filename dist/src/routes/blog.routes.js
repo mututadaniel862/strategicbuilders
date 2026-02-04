@@ -30,4 +30,3 @@ router.put('/:id', adminAuth, (req, res, next) => {
 }, validate(blogUpdateSchema), BlogController.updateBlog);
 router.delete('/:id', adminAuth, BlogController.deleteBlog);
 export default router;
-//# sourceMappingURL=blog.routes.js.map

@@ -12,4 +12,3 @@ router.get('/admin/all', adminAuth, ReviewController.getAllReviewsAdmin);
 router.patch('/:id/status', adminAuth, ReviewController.updateReviewStatus);
 router.delete('/:id', adminAuth, ReviewController.deleteReview);
 export default router;
-//# sourceMappingURL=review.routes.js.map

@@ -322,4 +322,3 @@ export class GalleryController {
 //     }
 //   }
 // }
-//# sourceMappingURL=gallery.controller.js.map

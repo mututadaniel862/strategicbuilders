@@ -17,4 +17,3 @@ export const adminUpdateSchema = z.object({
     message: "Current password is required when setting a new password",
     path: ["currentPassword"],
 });
-//# sourceMappingURL=admin.schema.js.map

@@ -18,4 +18,3 @@ export const validate = (schema) => (req, res, next) => {
         });
     }
 };
-//# sourceMappingURL=validate.js.map

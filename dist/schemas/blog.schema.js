@@ -8,4 +8,3 @@ export const blogSchema = z.object({
     featuredImage: z.string().optional()
 });
 export const blogUpdateSchema = blogSchema.partial();
-//# sourceMappingURL=blog.schema.js.map

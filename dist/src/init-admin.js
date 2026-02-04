@@ -64,4 +64,3 @@ async function initializeFirstAdmin() {
 }
 // Run the initialization
 initializeFirstAdmin();
-//# sourceMappingURL=init-admin.js.map

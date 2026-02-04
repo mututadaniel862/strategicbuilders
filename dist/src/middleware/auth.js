@@ -67,4 +67,3 @@ export const adminAuth = async (req, res, next) => {
 export const generateToken = (adminId, email, role) => {
     return jwt.sign({ id: adminId, email, role }, process.env.JWT_SECRET, { expiresIn: '24h' });
 };
-//# sourceMappingURL=auth.js.map

@@ -81,4 +81,3 @@ const startServer = async () => {
 };
 // Start the server
 startServer();
-//# sourceMappingURL=index.js.map
