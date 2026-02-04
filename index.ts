@@ -23,9 +23,12 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware - CORS MUST come before routes!
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com', 'https://strategicbuilderss.onrender.com'] 
-    : ['http://localhost:3000', 'http://localhost:3001'],
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001', 
+    'https://yourdomain.com',
+    'https://strategicbuilderss.onrender.com'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
