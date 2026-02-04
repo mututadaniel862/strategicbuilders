@@ -130,7 +130,9 @@ export class LogService {
           total: 0
         };
       }
-      acc[date][log.userType]++;
+      type UserType = 'public' | 'admin' | 'total';
+      acc[date][log.userType as UserType]++;
+
       acc[date].total++;
       return acc;
     }, {} as Record<string, { public: number; admin: number; total: number }>);

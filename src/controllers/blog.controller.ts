@@ -35,7 +35,10 @@ export class BlogController {
       if (!isNaN(Number(id))) {
         blog = await BlogService.getBlogById(Number(id));
       } else {
-        blog = await BlogService.getBlogBySlug(id);
+        // blog = await BlogService.getBlogBySlug(id);
+        const slug = Array.isArray(id) ? id[0] : id;
+        blog = await BlogService.getBlogBySlug(slug);
+
       }
       
       res.json({
@@ -80,7 +83,12 @@ export class BlogController {
 
       console.log('📦 Blog data:', blogData);
       
-      const blog = await BlogService.createBlog(blogData, (req as any).admin.id);
+      // const blog = await BlogService.createBlog(blogData, (req as any).admin.id);
+      const blog = await BlogService.createBlog(
+  { ...blogData, featuredImage: blogData.featuredImage || "" }, // default empty string
+  (req as any).admin.id
+);
+
       
       res.status(201).json({
         success: true,

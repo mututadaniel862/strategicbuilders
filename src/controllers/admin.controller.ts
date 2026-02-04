@@ -105,8 +105,11 @@ export class AdminController {
   // Delete admin
   static async deleteAdmin(req: AuthRequest, res: Response) {
     try {
-      const adminId = parseInt(req.params.id);
+      // const adminId = parseInt(req.params.id);
       
+const adminId = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id);
+
+
       if (isNaN(adminId)) {
         return res.status(400).json({
           success: false,
