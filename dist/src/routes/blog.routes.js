@@ -1,32 +1,34 @@
-import { Router } from 'express';
-import { BlogController } from '../controllers/blog.controller.js';
-import { adminAuth } from '../middleware/auth.js';
-import { validate } from '../middleware/validate.js';
-import { blogSchema, blogUpdateSchema } from '../../schemas/blog.schema.js';
-import { uploadBlogImage } from '../config/cloudinary.js';
-const router = Router();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const blog_controller_js_1 = require("../controllers/blog.controller.js");
+const auth_js_1 = require("../middleware/auth.js");
+const validate_js_1 = require("../middleware/validate.js");
+const blog_schema_js_1 = require("../../schemas/blog.schema.js");
+const cloudinary_js_1 = require("../config/cloudinary.js");
+const router = (0, express_1.Router)();
 // Public routes
-router.get('/', BlogController.getAllBlogs);
-router.get('/categories', BlogController.getCategories);
-router.get('/:id', BlogController.getBlog);
+router.get('/', blog_controller_js_1.BlogController.getAllBlogs);
+router.get('/categories', blog_controller_js_1.BlogController.getCategories);
+router.get('/:id', blog_controller_js_1.BlogController.getBlog);
 // Admin routes
-router.post('/', adminAuth, 
+router.post('/', auth_js_1.adminAuth, 
 // Make multer optional - only run for form-data
 (req, res, next) => {
     if (req.is('multipart/form-data')) {
-        uploadBlogImage.single('featuredImage')(req, res, next);
+        cloudinary_js_1.uploadBlogImage.single('featuredImage')(req, res, next);
     }
     else {
         next();
     }
-}, validate(blogSchema), BlogController.createBlog);
-router.put('/:id', adminAuth, (req, res, next) => {
+}, (0, validate_js_1.validate)(blog_schema_js_1.blogSchema), blog_controller_js_1.BlogController.createBlog);
+router.put('/:id', auth_js_1.adminAuth, (req, res, next) => {
     if (req.is('multipart/form-data')) {
-        uploadBlogImage.single('featuredImage')(req, res, next);
+        cloudinary_js_1.uploadBlogImage.single('featuredImage')(req, res, next);
     }
     else {
         next();
     }
-}, validate(blogUpdateSchema), BlogController.updateBlog);
-router.delete('/:id', adminAuth, BlogController.deleteBlog);
-export default router;
+}, (0, validate_js_1.validate)(blog_schema_js_1.blogUpdateSchema), blog_controller_js_1.BlogController.updateBlog);
+router.delete('/:id', auth_js_1.adminAuth, blog_controller_js_1.BlogController.deleteBlog);
+exports.default = router;

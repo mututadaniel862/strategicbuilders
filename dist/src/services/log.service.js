@@ -1,5 +1,11 @@
-import prisma from '../config/database.js';
-export class LogService {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LogService = void 0;
+const database_js_1 = __importDefault(require("../config/database.js"));
+class LogService {
     // Get all logs
     static async getAllLogs(page = 1, limit = 50, filters) {
         const skip = (page - 1) * limit;
@@ -20,13 +26,13 @@ export class LogService {
             }
         }
         const [logs, total] = await Promise.all([
-            prisma.log.findMany({
+            database_js_1.default.log.findMany({
                 where: whereClause,
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limit
             }),
-            prisma.log.count({ where: whereClause })
+            database_js_1.default.log.count({ where: whereClause })
         ]);
         return {
             logs,
@@ -44,7 +50,7 @@ export class LogService {
         today.setHours(0, 0, 0, 0);
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
-        const logs = await prisma.log.findMany({
+        const logs = await database_js_1.default.log.findMany({
             where: {
                 createdAt: {
                     gte: today,
@@ -67,7 +73,7 @@ export class LogService {
     }
     // Get logs by date range
     static async getLogsByDateRange(startDate, endDate) {
-        const logs = await prisma.log.findMany({
+        const logs = await database_js_1.default.log.findMany({
             where: {
                 createdAt: {
                     gte: startDate,
@@ -83,7 +89,7 @@ export class LogService {
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
-        const logs = await prisma.log.findMany({
+        const logs = await database_js_1.default.log.findMany({
             where: {
                 createdAt: {
                     gte: startDate,
@@ -127,3 +133,4 @@ export class LogService {
         };
     }
 }
+exports.LogService = LogService;

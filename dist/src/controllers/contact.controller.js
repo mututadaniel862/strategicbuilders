@@ -1,5 +1,8 @@
-import { ContactService } from '../services/contact.service.js';
-export class ContactController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ContactController = void 0;
+const contact_service_js_1 = require("../services/contact.service.js");
+class ContactController {
     // Submit contact form (public)
     // static async submitContact(req: Request, res: Response) {
     //   try {
@@ -21,7 +24,7 @@ export class ContactController {
     // Submit contact form (public)
     static async submitContact(req, res) {
         try {
-            const result = await ContactService.submitContactForm(req.body);
+            const result = await contact_service_js_1.ContactService.submitContactForm(req.body);
             res.status(201).json({
                 success: true,
                 ...result
@@ -45,7 +48,7 @@ export class ContactController {
                 filters.isResolved = isResolved === 'true';
             if (search)
                 filters.search = search;
-            const result = await ContactService.getAllMessages(Number(page), Number(limit), filters);
+            const result = await contact_service_js_1.ContactService.getAllMessages(Number(page), Number(limit), filters);
             res.json({
                 success: true,
                 ...result
@@ -62,7 +65,7 @@ export class ContactController {
     static async getMessage(req, res) {
         try {
             const { id } = req.params;
-            const message = await ContactService.getMessageById(Number(id));
+            const message = await contact_service_js_1.ContactService.getMessageById(Number(id));
             res.json({
                 success: true,
                 message
@@ -79,7 +82,7 @@ export class ContactController {
     static async updateMessage(req, res) {
         try {
             const { id } = req.params;
-            const message = await ContactService.updateMessage(Number(id), req.body);
+            const message = await contact_service_js_1.ContactService.updateMessage(Number(id), req.body);
             res.json({
                 success: true,
                 message: 'Contact message updated successfully',
@@ -97,7 +100,7 @@ export class ContactController {
     static async deleteMessage(req, res) {
         try {
             const { id } = req.params;
-            await ContactService.deleteMessage(Number(id));
+            await contact_service_js_1.ContactService.deleteMessage(Number(id));
             res.json({
                 success: true,
                 message: 'Contact message deleted successfully'
@@ -113,7 +116,7 @@ export class ContactController {
     // Get message statistics
     static async getMessageStats(req, res) {
         try {
-            const stats = await ContactService.getMessageStats();
+            const stats = await contact_service_js_1.ContactService.getMessageStats();
             res.json({
                 success: true,
                 stats
@@ -127,3 +130,4 @@ export class ContactController {
         }
     }
 }
+exports.ContactController = ContactController;

@@ -1,19 +1,21 @@
-import { Router } from 'express';
-import { AdminController } from '../controllers/admin.controller.js';
-import { adminAuth } from '../middleware/auth.js';
-import { validate } from '../middleware/validate.js';
-import { adminLoginSchema, adminUpdateSchema } from '../../schemas/admin.schema.js';
-const router = Router();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const admin_controller_js_1 = require("../controllers/admin.controller.js");
+const auth_js_1 = require("../middleware/auth.js");
+const validate_js_1 = require("../middleware/validate.js");
+const admin_schema_js_1 = require("../../schemas/admin.schema.js");
+const router = (0, express_1.Router)();
 // Initialize first admin (call this once to create the first admin)
-router.post('/initialize', AdminController.initialize);
+router.post('/initialize', admin_controller_js_1.AdminController.initialize);
 // Public routes
-router.post('/login', validate(adminLoginSchema), AdminController.login);
+router.post('/login', (0, validate_js_1.validate)(admin_schema_js_1.adminLoginSchema), admin_controller_js_1.AdminController.login);
 // Protected routes (admin only)
-router.get('/profile', adminAuth, AdminController.getProfile);
-router.put('/profile', adminAuth, validate(adminUpdateSchema), AdminController.updateProfile);
-router.get('/dashboard', adminAuth, AdminController.getDashboardStats);
+router.get('/profile', auth_js_1.adminAuth, admin_controller_js_1.AdminController.getProfile);
+router.put('/profile', auth_js_1.adminAuth, (0, validate_js_1.validate)(admin_schema_js_1.adminUpdateSchema), admin_controller_js_1.AdminController.updateProfile);
+router.get('/dashboard', auth_js_1.adminAuth, admin_controller_js_1.AdminController.getDashboardStats);
 // Admin management routes (admin only)
-router.post('/create', adminAuth, AdminController.createAdmin);
-router.get('/all', adminAuth, AdminController.getAllAdmins);
-router.delete('/:id', adminAuth, AdminController.deleteAdmin);
-export default router;
+router.post('/create', auth_js_1.adminAuth, admin_controller_js_1.AdminController.createAdmin);
+router.get('/all', auth_js_1.adminAuth, admin_controller_js_1.AdminController.getAllAdmins);
+router.delete('/:id', auth_js_1.adminAuth, admin_controller_js_1.AdminController.deleteAdmin);
+exports.default = router;

@@ -1,5 +1,11 @@
-import prisma from '../config/database.js';
-export class BlogService {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlogService = void 0;
+const database_js_1 = __importDefault(require("../config/database.js"));
+class BlogService {
     // Get all blogs
     static async getAllBlogs(page = 1, limit = 10, search, category) {
         const skip = (page - 1) * limit;
@@ -17,7 +23,7 @@ export class BlogService {
             whereClause.category = category;
         }
         const [blogs, total] = await Promise.all([
-            prisma.blog.findMany({
+            database_js_1.default.blog.findMany({
                 where: whereClause,
                 orderBy: { createdAt: 'desc' },
                 skip,
@@ -34,7 +40,7 @@ export class BlogService {
                     createdAt: true
                 }
             }),
-            prisma.blog.count({ where: whereClause })
+            database_js_1.default.blog.count({ where: whereClause })
         ]);
         return {
             blogs,
@@ -48,14 +54,14 @@ export class BlogService {
     }
     // Get single blog
     static async getBlogById(id) {
-        const blog = await prisma.blog.findUnique({
+        const blog = await database_js_1.default.blog.findUnique({
             where: { id }
         });
         if (!blog) {
             throw new Error('Blog not found');
         }
         // Increment views
-        await prisma.blog.update({
+        await database_js_1.default.blog.update({
             where: { id },
             data: { views: { increment: 1 } }
         });
@@ -63,13 +69,13 @@ export class BlogService {
     }
     // Get blog by slug
     static async getBlogBySlug(slug) {
-        const blog = await prisma.blog.findUnique({
+        const blog = await database_js_1.default.blog.findUnique({
             where: { slug }
         });
         if (!blog) {
             throw new Error('Blog not found');
         }
-        await prisma.blog.update({
+        await database_js_1.default.blog.update({
             where: { slug },
             data: { views: { increment: 1 } }
         });
@@ -81,7 +87,7 @@ export class BlogService {
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)/g, '');
-        const blog = await prisma.blog.create({
+        const blog = await database_js_1.default.blog.create({
             data: {
                 ...blogData,
                 slug,
@@ -89,7 +95,7 @@ export class BlogService {
             }
         });
         // Log the action
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'blog_created',
                 details: { blogId: blog.id, title: blog.title },
@@ -101,7 +107,7 @@ export class BlogService {
     }
     // Update blog
     static async updateBlog(id, updateData) {
-        const blog = await prisma.blog.findUnique({
+        const blog = await database_js_1.default.blog.findUnique({
             where: { id }
         });
         if (!blog) {
@@ -115,11 +121,11 @@ export class BlogService {
                 .replace(/(^-|-$)/g, '');
             updatePayload.slug = slug;
         }
-        const updatedBlog = await prisma.blog.update({
+        const updatedBlog = await database_js_1.default.blog.update({
             where: { id },
             data: updatePayload
         });
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'blog_updated',
                 details: { blogId: id, title: updatedBlog.title },
@@ -131,16 +137,16 @@ export class BlogService {
     }
     // Delete blog
     static async deleteBlog(id) {
-        const blog = await prisma.blog.findUnique({
+        const blog = await database_js_1.default.blog.findUnique({
             where: { id }
         });
         if (!blog) {
             throw new Error('Blog not found');
         }
-        await prisma.blog.delete({
+        await database_js_1.default.blog.delete({
             where: { id }
         });
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'blog_deleted',
                 details: { blogId: id, title: blog.title },
@@ -155,7 +161,7 @@ export class BlogService {
     // Get blog categories
     static async getBlogCategories() {
         try {
-            const blogs = await prisma.blog.findMany({
+            const blogs = await database_js_1.default.blog.findMany({
                 where: {
                     isPublished: true
                     // Remove the entire category filter!
@@ -174,3 +180,4 @@ export class BlogService {
         }
     }
 }
+exports.BlogService = BlogService;

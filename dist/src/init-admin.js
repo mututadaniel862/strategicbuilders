@@ -1,11 +1,16 @@
-import bcrypt from 'bcryptjs';
-import prisma from './config/database.js';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const database_js_1 = __importDefault(require("./config/database.js"));
 async function initializeFirstAdmin() {
     try {
         console.log('🚀 Starting admin initialization...');
         console.log('');
         // Check if any admin exists
-        const existingAdmin = await prisma.admin.findFirst();
+        const existingAdmin = await database_js_1.default.admin.findFirst();
         if (existingAdmin) {
             console.log('⚠️  Admin already exists!');
             console.log('Email:', existingAdmin.email);
@@ -15,9 +20,9 @@ async function initializeFirstAdmin() {
         }
         console.log('📝 Creating first admin account...');
         // Hash the password
-        const hashedPassword = await bcrypt.hash('ChiKukw@stra', 10);
+        const hashedPassword = await bcryptjs_1.default.hash('ChiKukw@stra', 10);
         // Create the admin
-        const admin = await prisma.admin.create({
+        const admin = await database_js_1.default.admin.create({
             data: {
                 email: 'stategicbuilderss@gmail.com',
                 password: hashedPassword,
@@ -58,7 +63,7 @@ async function initializeFirstAdmin() {
         }
     }
     finally {
-        await prisma.$disconnect();
+        await database_js_1.default.$disconnect();
         console.log('🔌 Database connection closed.');
     }
 }

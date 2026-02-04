@@ -1,5 +1,11 @@
-import prisma from '../config/database.js';
-export class ReviewService {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReviewService = void 0;
+const database_js_1 = __importDefault(require("../config/database.js"));
+class ReviewService {
     // Get all reviews (public)
     static async getAllReviews(page = 1, limit = 10, approvedOnly = true) {
         const skip = (page - 1) * limit;
@@ -8,7 +14,7 @@ export class ReviewService {
             whereClause.isApproved = true;
         }
         const [reviews, total] = await Promise.all([
-            prisma.review.findMany({
+            database_js_1.default.review.findMany({
                 where: whereClause,
                 orderBy: { createdAt: 'desc' },
                 skip,
@@ -22,10 +28,10 @@ export class ReviewService {
                     createdAt: true
                 }
             }),
-            prisma.review.count({ where: whereClause })
+            database_js_1.default.review.count({ where: whereClause })
         ]);
         // Calculate average rating
-        const averageRating = await prisma.review.aggregate({
+        const averageRating = await database_js_1.default.review.aggregate({
             where: { isApproved: true },
             _avg: {
                 rating: true
@@ -44,7 +50,7 @@ export class ReviewService {
     }
     // Create review
     static async createReview(reviewData, ipAddress, userAgent) {
-        const review = await prisma.review.create({
+        const review = await database_js_1.default.review.create({
             data: {
                 ...reviewData,
                 ipAddress,
@@ -52,7 +58,7 @@ export class ReviewService {
                 isApproved: true // Auto-approve as requested
             }
         });
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'review_created',
                 details: { reviewId: review.id, name: review.name },
@@ -66,12 +72,12 @@ export class ReviewService {
     static async getAllReviewsForAdmin(page = 1, limit = 20) {
         const skip = (page - 1) * limit;
         const [reviews, total] = await Promise.all([
-            prisma.review.findMany({
+            database_js_1.default.review.findMany({
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limit
             }),
-            prisma.review.count()
+            database_js_1.default.review.count()
         ]);
         return {
             reviews,
@@ -85,17 +91,17 @@ export class ReviewService {
     }
     // Admin: Update review approval status
     static async updateReviewStatus(id, isApproved) {
-        const review = await prisma.review.findUnique({
+        const review = await database_js_1.default.review.findUnique({
             where: { id }
         });
         if (!review) {
             throw new Error('Review not found');
         }
-        const updatedReview = await prisma.review.update({
+        const updatedReview = await database_js_1.default.review.update({
             where: { id },
             data: { isApproved }
         });
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'review_status_updated',
                 details: { reviewId: id, status: isApproved, name: review.name },
@@ -107,16 +113,16 @@ export class ReviewService {
     }
     // Admin: Delete review
     static async deleteReview(id) {
-        const review = await prisma.review.findUnique({
+        const review = await database_js_1.default.review.findUnique({
             where: { id }
         });
         if (!review) {
             throw new Error('Review not found');
         }
-        await prisma.review.delete({
+        await database_js_1.default.review.delete({
             where: { id }
         });
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'review_deleted',
                 details: { reviewId: id, name: review.name },
@@ -127,3 +133,4 @@ export class ReviewService {
         return { message: 'Review deleted successfully' };
     }
 }
+exports.ReviewService = ReviewService;

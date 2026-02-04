@@ -1,10 +1,13 @@
-import { BlogService } from '../services/blog.service.js';
-export class BlogController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlogController = void 0;
+const blog_service_js_1 = require("../services/blog.service.js");
+class BlogController {
     // Get all blogs (public)
     static async getAllBlogs(req, res) {
         try {
             const { page = 1, limit = 10, search, category } = req.query;
-            const result = await BlogService.getAllBlogs(Number(page), Number(limit), search, category);
+            const result = await blog_service_js_1.BlogService.getAllBlogs(Number(page), Number(limit), search, category);
             res.json({
                 success: true,
                 ...result
@@ -23,12 +26,12 @@ export class BlogController {
             const { id } = req.params;
             let blog;
             if (!isNaN(Number(id))) {
-                blog = await BlogService.getBlogById(Number(id));
+                blog = await blog_service_js_1.BlogService.getBlogById(Number(id));
             }
             else {
                 // blog = await BlogService.getBlogBySlug(id);
                 const slug = Array.isArray(id) ? id[0] : id;
-                blog = await BlogService.getBlogBySlug(slug);
+                blog = await blog_service_js_1.BlogService.getBlogBySlug(slug);
             }
             res.json({
                 success: true,
@@ -68,7 +71,7 @@ export class BlogController {
             };
             console.log('📦 Blog data:', blogData);
             // const blog = await BlogService.createBlog(blogData, (req as any).admin.id);
-            const blog = await BlogService.createBlog({ ...blogData, featuredImage: blogData.featuredImage || "" }, // default empty string
+            const blog = await blog_service_js_1.BlogService.createBlog({ ...blogData, featuredImage: blogData.featuredImage || "" }, // default empty string
             req.admin.id);
             res.status(201).json({
                 success: true,
@@ -99,7 +102,7 @@ export class BlogController {
                 ...req.body,
                 ...(featuredImage && { featuredImage })
             };
-            const blog = await BlogService.updateBlog(Number(id), updateData);
+            const blog = await blog_service_js_1.BlogService.updateBlog(Number(id), updateData);
             res.json({
                 success: true,
                 message: 'Blog updated successfully',
@@ -117,7 +120,7 @@ export class BlogController {
     static async deleteBlog(req, res) {
         try {
             const { id } = req.params;
-            await BlogService.deleteBlog(Number(id));
+            await blog_service_js_1.BlogService.deleteBlog(Number(id));
             res.json({
                 success: true,
                 message: 'Blog deleted successfully'
@@ -133,7 +136,7 @@ export class BlogController {
     // Get blog categories
     static async getCategories(req, res) {
         try {
-            const categories = await BlogService.getBlogCategories();
+            const categories = await blog_service_js_1.BlogService.getBlogCategories();
             res.json({
                 success: true,
                 categories
@@ -147,3 +150,4 @@ export class BlogController {
         }
     }
 }
+exports.BlogController = BlogController;

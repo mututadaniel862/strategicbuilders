@@ -1,9 +1,12 @@
-import { AdminService } from '../services/admin.service.js';
-export class AdminController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AdminController = void 0;
+const admin_service_js_1 = require("../services/admin.service.js");
+class AdminController {
     // Initialize first admin (call this once)
     static async initialize(req, res) {
         try {
-            const result = await AdminService.initializeAdmin();
+            const result = await admin_service_js_1.AdminService.initializeAdmin();
             if (!result) {
                 res.json({
                     success: false,
@@ -31,7 +34,7 @@ export class AdminController {
     // Admin login
     static async login(req, res) {
         try {
-            const result = await AdminService.login(req.body, req.ip);
+            const result = await admin_service_js_1.AdminService.login(req.body, req.ip);
             res.json({
                 success: true,
                 ...result
@@ -60,7 +63,7 @@ export class AdminController {
                     error: 'Password must be at least 6 characters'
                 });
             }
-            const newAdmin = await AdminService.createAdmin(req.admin.id, {
+            const newAdmin = await admin_service_js_1.AdminService.createAdmin(req.admin.id, {
                 email,
                 phone,
                 password,
@@ -82,7 +85,7 @@ export class AdminController {
     // Get all admins
     static async getAllAdmins(req, res) {
         try {
-            const admins = await AdminService.getAllAdmins(req.admin.id);
+            const admins = await admin_service_js_1.AdminService.getAllAdmins(req.admin.id);
             res.json({
                 success: true,
                 admins
@@ -106,7 +109,7 @@ export class AdminController {
                     error: 'Invalid admin ID'
                 });
             }
-            const result = await AdminService.deleteAdmin(req.admin.id, adminId);
+            const result = await admin_service_js_1.AdminService.deleteAdmin(req.admin.id, adminId);
             res.json({
                 success: true,
                 ...result
@@ -122,7 +125,7 @@ export class AdminController {
     // Get admin profile
     static async getProfile(req, res) {
         try {
-            const admin = await AdminService.getProfile(req.admin.id);
+            const admin = await admin_service_js_1.AdminService.getProfile(req.admin.id);
             res.json({
                 success: true,
                 admin
@@ -138,7 +141,7 @@ export class AdminController {
     // Update admin profile
     static async updateProfile(req, res) {
         try {
-            const updatedAdmin = await AdminService.updateProfile(req.admin.id, req.body);
+            const updatedAdmin = await admin_service_js_1.AdminService.updateProfile(req.admin.id, req.body);
             res.json({
                 success: true,
                 message: 'Profile updated successfully',
@@ -155,7 +158,7 @@ export class AdminController {
     // Get dashboard stats
     static async getDashboardStats(req, res) {
         try {
-            const stats = await AdminService.getDashboardStats();
+            const stats = await admin_service_js_1.AdminService.getDashboardStats();
             res.json({
                 success: true,
                 stats
@@ -169,3 +172,4 @@ export class AdminController {
         }
     }
 }
+exports.AdminController = AdminController;

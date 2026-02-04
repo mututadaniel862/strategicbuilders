@@ -1,10 +1,13 @@
-import { GalleryService } from '../services/gallery.service.js';
-export class GalleryController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GalleryController = void 0;
+const gallery_service_js_1 = require("../services/gallery.service.js");
+class GalleryController {
     // Get all gallery items (public)
     static async getAllGallery(req, res) {
         try {
             const { category, featured } = req.query;
-            const galleryItems = await GalleryService.getAllGalleryItems(category, featured === 'true');
+            const galleryItems = await gallery_service_js_1.GalleryService.getAllGalleryItems(category, featured === 'true');
             res.json({
                 success: true,
                 gallery: galleryItems
@@ -21,7 +24,7 @@ export class GalleryController {
     static async getGalleryItem(req, res) {
         try {
             const { id } = req.params;
-            const galleryItem = await GalleryService.getGalleryItemById(Number(id));
+            const galleryItem = await gallery_service_js_1.GalleryService.getGalleryItemById(Number(id));
             res.json({
                 success: true,
                 galleryItem
@@ -93,7 +96,7 @@ export class GalleryController {
                 beforeImage: galleryData.beforeImage.substring(0, 50) + '...',
                 afterImage: galleryData.afterImage.substring(0, 50) + '...'
             });
-            const galleryItem = await GalleryService.createGalleryItem(galleryData, req.admin.id);
+            const galleryItem = await gallery_service_js_1.GalleryService.createGalleryItem(galleryData, req.admin.id);
             res.status(201).json({
                 success: true,
                 message: 'Gallery item created successfully',
@@ -120,7 +123,7 @@ export class GalleryController {
                 if (req.files[1])
                     updateData.afterImage = req.files[1].path;
             }
-            const galleryItem = await GalleryService.updateGalleryItem(Number(id), updateData);
+            const galleryItem = await gallery_service_js_1.GalleryService.updateGalleryItem(Number(id), updateData);
             res.json({
                 success: true,
                 message: 'Gallery item updated successfully',
@@ -138,7 +141,7 @@ export class GalleryController {
     static async deleteGalleryItem(req, res) {
         try {
             const { id } = req.params;
-            await GalleryService.deleteGalleryItem(Number(id));
+            await gallery_service_js_1.GalleryService.deleteGalleryItem(Number(id));
             res.json({
                 success: true,
                 message: 'Gallery item deleted successfully'
@@ -154,7 +157,7 @@ export class GalleryController {
     // Get gallery categories
     static async getCategories(req, res) {
         try {
-            const categories = await GalleryService.getGalleryCategories();
+            const categories = await gallery_service_js_1.GalleryService.getGalleryCategories();
             res.json({
                 success: true,
                 categories
@@ -170,7 +173,7 @@ export class GalleryController {
     // Get contact info for hover
     static async getContactInfo(req, res) {
         try {
-            const contactInfo = await GalleryService.getGalleryContactInfo();
+            const contactInfo = await gallery_service_js_1.GalleryService.getGalleryContactInfo();
             res.json({
                 success: true,
                 ...contactInfo
@@ -184,6 +187,7 @@ export class GalleryController {
         }
     }
 }
+exports.GalleryController = GalleryController;
 // import type { Request, Response } from 'express';
 // import { GalleryService } from '../services/gallery.service.js';
 // export class GalleryController {

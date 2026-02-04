@@ -1,10 +1,13 @@
-import { ReviewService } from '../services/review.service.js';
-export class ReviewController {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReviewController = void 0;
+const review_service_js_1 = require("../services/review.service.js");
+class ReviewController {
     // Get all reviews (public)
     static async getAllReviews(req, res) {
         try {
             const { page = 1, limit = 10 } = req.query;
-            const result = await ReviewService.getAllReviews(Number(page), Number(limit));
+            const result = await review_service_js_1.ReviewService.getAllReviews(Number(page), Number(limit));
             res.json({
                 success: true,
                 ...result
@@ -54,7 +57,7 @@ export class ReviewController {
     static async createReview(req, res) {
         try {
             // No need to validate here - middleware already did it
-            const review = await ReviewService.createReview(req.body, req.ip, req.get('user-agent'));
+            const review = await review_service_js_1.ReviewService.createReview(req.body, req.ip, req.get('user-agent'));
             res.status(201).json({
                 success: true,
                 message: 'Review submitted successfully',
@@ -72,7 +75,7 @@ export class ReviewController {
     static async getAllReviewsAdmin(req, res) {
         try {
             const { page = 1, limit = 20 } = req.query;
-            const result = await ReviewService.getAllReviewsForAdmin(Number(page), Number(limit));
+            const result = await review_service_js_1.ReviewService.getAllReviewsForAdmin(Number(page), Number(limit));
             res.json({
                 success: true,
                 ...result
@@ -90,7 +93,7 @@ export class ReviewController {
         try {
             const { id } = req.params;
             const { isApproved } = req.body;
-            const review = await ReviewService.updateReviewStatus(Number(id), isApproved);
+            const review = await review_service_js_1.ReviewService.updateReviewStatus(Number(id), isApproved);
             res.json({
                 success: true,
                 message: `Review ${isApproved ? 'approved' : 'unapproved'} successfully`,
@@ -108,7 +111,7 @@ export class ReviewController {
     static async deleteReview(req, res) {
         try {
             const { id } = req.params;
-            await ReviewService.deleteReview(Number(id));
+            await review_service_js_1.ReviewService.deleteReview(Number(id));
             res.json({
                 success: true,
                 message: 'Review deleted successfully'
@@ -122,3 +125,4 @@ export class ReviewController {
         }
     }
 }
+exports.ReviewController = ReviewController;

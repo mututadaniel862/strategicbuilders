@@ -1,6 +1,12 @@
-import prisma from '../config/database.js';
-import { sendContactEmailToAdmin } from '../config/mailer.js';
-export class ContactService {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ContactService = void 0;
+const database_js_1 = __importDefault(require("../config/database.js"));
+const mailer_js_1 = require("../config/mailer.js");
+class ContactService {
     // Submit contact form
     // static async submitContactForm(
     //   contactData: ContactFormData,
@@ -45,17 +51,17 @@ export class ContactService {
     // Submit contact form
     static async submitContactForm(contactData) {
         // Create message in database
-        const message = await prisma.message.create({
+        const message = await database_js_1.default.message.create({
             data: contactData // Just pass the contact data directly
         });
         // Send email to admin
         try {
-            await sendContactEmailToAdmin(contactData.name, contactData.email, contactData.message, contactData.phone);
+            await (0, mailer_js_1.sendContactEmailToAdmin)(contactData.name, contactData.email, contactData.message, contactData.phone);
         }
         catch (error) {
             console.error('Failed to send email notification:', error);
         }
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'contact_form_submitted',
                 details: { messageId: message.id, name: message.name },
@@ -91,13 +97,13 @@ export class ContactService {
             ];
         }
         const [messages, total] = await Promise.all([
-            prisma.message.findMany({
+            database_js_1.default.message.findMany({
                 where: whereClause,
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limit
             }),
-            prisma.message.count({ where: whereClause })
+            database_js_1.default.message.count({ where: whereClause })
         ]);
         return {
             messages,
@@ -111,7 +117,7 @@ export class ContactService {
     }
     // Admin: Get single message
     static async getMessageById(id) {
-        const message = await prisma.message.findUnique({
+        const message = await database_js_1.default.message.findUnique({
             where: { id }
         });
         if (!message) {
@@ -119,7 +125,7 @@ export class ContactService {
         }
         // Mark as read when admin views it
         if (!message.isRead) {
-            await prisma.message.update({
+            await database_js_1.default.message.update({
                 where: { id },
                 data: { isRead: true }
             });
@@ -128,17 +134,17 @@ export class ContactService {
     }
     // Admin: Update message
     static async updateMessage(id, updateData) {
-        const message = await prisma.message.findUnique({
+        const message = await database_js_1.default.message.findUnique({
             where: { id }
         });
         if (!message) {
             throw new Error('Message not found');
         }
-        const updatedMessage = await prisma.message.update({
+        const updatedMessage = await database_js_1.default.message.update({
             where: { id },
             data: updateData
         });
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'message_updated',
                 details: { messageId: id, name: message.name },
@@ -150,16 +156,16 @@ export class ContactService {
     }
     // Admin: Delete message
     static async deleteMessage(id) {
-        const message = await prisma.message.findUnique({
+        const message = await database_js_1.default.message.findUnique({
             where: { id }
         });
         if (!message) {
             throw new Error('Message not found');
         }
-        await prisma.message.delete({
+        await database_js_1.default.message.delete({
             where: { id }
         });
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action: 'message_deleted',
                 details: { messageId: id, name: message.name },
@@ -172,10 +178,10 @@ export class ContactService {
     // Get message statistics
     static async getMessageStats() {
         const [total, unread, resolved, todayCount] = await Promise.all([
-            prisma.message.count(),
-            prisma.message.count({ where: { isRead: false } }),
-            prisma.message.count({ where: { isResolved: true } }),
-            prisma.message.count({
+            database_js_1.default.message.count(),
+            database_js_1.default.message.count({ where: { isRead: false } }),
+            database_js_1.default.message.count({ where: { isResolved: true } }),
+            database_js_1.default.message.count({
                 where: {
                     createdAt: {
                         gte: new Date(new Date().setHours(0, 0, 0, 0))
@@ -191,3 +197,4 @@ export class ContactService {
         };
     }
 }
+exports.ContactService = ContactService;

@@ -1,24 +1,27 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RESPONSE_MESSAGES = exports.GALLERY_CATEGORIES = exports.BLOG_CATEGORIES = exports.PAGINATION = exports.UPLOAD_LIMITS = exports.RATE_LIMIT = exports.APP_VERSION = exports.APP_NAME = void 0;
 // Constants
-export const APP_NAME = "Website Backend";
-export const APP_VERSION = "1.0.0";
+exports.APP_NAME = "Website Backend";
+exports.APP_VERSION = "1.0.0";
 // API Rate limiting
-export const RATE_LIMIT = {
+exports.RATE_LIMIT = {
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100 // limit each IP to 100 requests per windowMs
 };
 // File upload limits
-export const UPLOAD_LIMITS = {
+exports.UPLOAD_LIMITS = {
     fileSize: 5 * 1024 * 1024, // 5MB
     files: 10 // maximum files
 };
 // Pagination defaults
-export const PAGINATION = {
+exports.PAGINATION = {
     DEFAULT_PAGE: 1,
     DEFAULT_LIMIT: 10,
     MAX_LIMIT: 100
 };
 // Categories for blog and gallery
-export const BLOG_CATEGORIES = [
+exports.BLOG_CATEGORIES = [
     'General',
     'Technology',
     'Design',
@@ -27,14 +30,14 @@ export const BLOG_CATEGORIES = [
     'Health',
     'Travel'
 ];
-export const GALLERY_CATEGORIES = [
+exports.GALLERY_CATEGORIES = [
     'renovation',
     'construction',
     'design',
     'other'
 ];
 // Response messages
-export const RESPONSE_MESSAGES = {
+exports.RESPONSE_MESSAGES = {
     SUCCESS: 'Operation completed successfully',
     NOT_FOUND: 'Resource not found',
     UNAUTHORIZED: 'Unauthorized access',

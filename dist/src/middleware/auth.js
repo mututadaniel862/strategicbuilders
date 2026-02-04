@@ -1,7 +1,13 @@
-import jwt from 'jsonwebtoken';
-import prisma from '../config/database.js';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateToken = exports.adminAuth = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const database_js_1 = __importDefault(require("../config/database.js"));
 // Admin authentication middleware
-export const adminAuth = async (req, res, next) => {
+const adminAuth = async (req, res, next) => {
     try {
         // Get token from header
         const authHeader = req.header('Authorization');
@@ -21,9 +27,9 @@ export const adminAuth = async (req, res, next) => {
             return;
         }
         // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
         // Find admin in database
-        const admin = await prisma.admin.findUnique({
+        const admin = await database_js_1.default.admin.findUnique({
             where: { id: decoded.id }
         });
         if (!admin) {
@@ -42,14 +48,14 @@ export const adminAuth = async (req, res, next) => {
         next();
     }
     catch (error) {
-        if (error instanceof jwt.JsonWebTokenError) {
+        if (error instanceof jsonwebtoken_1.default.JsonWebTokenError) {
             res.status(401).json({
                 success: false,
                 error: 'Invalid or malformed token'
             });
             return;
         }
-        if (error instanceof jwt.TokenExpiredError) {
+        if (error instanceof jsonwebtoken_1.default.TokenExpiredError) {
             res.status(401).json({
                 success: false,
                 error: 'Token has expired'
@@ -63,7 +69,9 @@ export const adminAuth = async (req, res, next) => {
         });
     }
 };
+exports.adminAuth = adminAuth;
 // Generate JWT token
-export const generateToken = (adminId, email, role) => {
-    return jwt.sign({ id: adminId, email, role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+const generateToken = (adminId, email, role) => {
+    return jsonwebtoken_1.default.sign({ id: adminId, email, role }, process.env.JWT_SECRET, { expiresIn: '24h' });
 };
+exports.generateToken = generateToken;

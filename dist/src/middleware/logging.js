@@ -1,8 +1,14 @@
-import prisma from '../config/database.js';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTodayLogs = exports.requestLogger = exports.logAction = void 0;
+const database_js_1 = __importDefault(require("../config/database.js"));
 // Log action to database
-export const logAction = async (action, details = {}, userType = 'public', req) => {
+const logAction = async (action, details = {}, userType = 'public', req) => {
     try {
-        await prisma.log.create({
+        await database_js_1.default.log.create({
             data: {
                 action,
                 details,
@@ -16,8 +22,9 @@ export const logAction = async (action, details = {}, userType = 'public', req) 
         console.error('❌ Failed to log action:', error);
     }
 };
+exports.logAction = logAction;
 // Request logger middleware
-export const requestLogger = (req, res, next) => {
+const requestLogger = (req, res, next) => {
     const start = Date.now();
     // Log when response is finished
     res.on('finish', async () => {
@@ -56,7 +63,7 @@ export const requestLogger = (req, res, next) => {
         }
         // Log significant actions
         if (action) {
-            await logAction(action, {
+            await (0, exports.logAction)(action, {
                 endpoint: req.path,
                 method: req.method,
                 statusCode: res.statusCode,
@@ -67,14 +74,15 @@ export const requestLogger = (req, res, next) => {
     });
     next();
 };
+exports.requestLogger = requestLogger;
 // Get today's logs
-export const getTodayLogs = async () => {
+const getTodayLogs = async () => {
     try {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
-        const logs = await prisma.log.findMany({
+        const logs = await database_js_1.default.log.findMany({
             where: {
                 createdAt: {
                     gte: today,
@@ -110,3 +118,4 @@ export const getTodayLogs = async () => {
         throw error;
     }
 };
+exports.getTodayLogs = getTodayLogs;
