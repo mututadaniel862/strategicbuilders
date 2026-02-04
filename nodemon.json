@@ -1,6 +1,6 @@
 {
-  "watch": ["index.ts", "src", ".env"],   
+  "watch": ["index.ts", "src", "prisma", ".env"],   
   "ext": "ts,json",
   "exec": "tsx index.ts",
-  "ignore": ["node_modules", "*.test.ts"]
+  "ignore": ["node_modules", "*.test.ts", "dist"]
 }
