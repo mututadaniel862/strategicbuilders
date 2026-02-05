@@ -7,6 +7,52 @@ exports.BlogService = void 0;
 const database_js_1 = __importDefault(require("../config/database.js"));
 class BlogService {
     // Get all blogs
+    // static async getAllBlogs(page: number = 1, limit: number = 10, search?: string, category?: string) {
+    //   const skip = (page - 1) * limit;
+    //   const whereClause: any = {
+    //     isPublished: true
+    //   };
+    //   if (search) {
+    //     whereClause.OR = [
+    //       { title: { contains: search, mode: 'insensitive' } },
+    //       { content: { contains: search, mode: 'insensitive' } },
+    //       { excerpt: { contains: search, mode: 'insensitive' } }
+    //     ];
+    //   }
+    //   if (category) {
+    //     whereClause.category = category;
+    //   }
+    //   const [blogs, total] = await Promise.all([
+    //     prisma.blog.findMany({
+    //       where: whereClause,
+    //       orderBy: { createdAt: 'desc' },
+    //       skip,
+    //       take: limit,
+    //       select: {
+    //         id: true,
+    //         title: true,
+    //         slug: true,
+    //         excerpt: true,
+    //         featuredImage: true,
+    //         author: true,
+    //         category: true,
+    //         views: true,
+    //         createdAt: true
+    //       }
+    //     }),
+    //     prisma.blog.count({ where: whereClause })
+    //   ]);
+    //   return {
+    //     blogs,
+    //     pagination: {
+    //       total,
+    //       page,
+    //       pages: Math.ceil(total / limit),
+    //       limit
+    //     }
+    //   };
+    // }
+    // In blog.service.ts - Update getAllBlogs method:
     static async getAllBlogs(page = 1, limit = 10, search, category) {
         const skip = (page - 1) * limit;
         const whereClause = {
@@ -33,11 +79,14 @@ class BlogService {
                     title: true,
                     slug: true,
                     excerpt: true,
-                    featuredImage: true,
+                    featuredImage: true, // ← MAKE SURE THIS IS HERE!
                     author: true,
                     category: true,
                     views: true,
-                    createdAt: true
+                    createdAt: true,
+                    isPublished: true, // ← ADD THIS TOO!
+                    content: true, // ← ADD THIS IF YOU NEED IT!
+                    updatedAt: true // ← ADD THIS TOO!
                 }
             }),
             database_js_1.default.blog.count({ where: whereClause })
